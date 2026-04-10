@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NES Player</title>
+  <link rel="icon" type="image/svg+xml" href="https://lsong.org/icon.svg">
+  <link rel="stylesheet" href="css/player.css">
+</head>
+
+<body>
+  <div class="page">
+    <!-- Left: game info -->
+    <aside class="info-panel">
+      <img class="game-cover" id="game-cover" alt="cover">
+      <div class="game-meta-info">
+        <span class="game-meta-title" id="game-title"></span>
+        <span class="game-meta-cn" id="game-title-cn"></span>
+        <div class="game-desc" id="game-desc"></div>
+        <div class="game-badges" id="game-badges"></div>
+      </div>
+    </aside>
+
+    <!-- Center: screen -->
+    <div class="screen-area">
+      <div class="screen-wrapper">
+        <canvas id="screen" width="768" height="720"></canvas>
+        <div class="overlay" id="loading">
+          <div class="spinner"></div>
+          <p class="overlay-text">Loading…</p>
+        </div>
+        <div class="overlay hidden" id="error">
+          <p class="error-msg" id="error-msg"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: controller -->
+    <div class="controller-panel">
+      <div class="controller">
+        <div class="dpad">
+          <div class="dpad-btn up" data-btn="up">▲</div>
+          <div class="dpad-btn down" data-btn="down">▼</div>
+          <div class="dpad-btn left" data-btn="left">◀</div>
+          <div class="dpad-btn right" data-btn="right">▶</div>
+        </div>
+
+        <div class="center-buttons">
+          <div class="center-btn" data-btn="select">Select</div>
+          <div class="center-btn" data-btn="start">Start</div>
+        </div>
+
+        <div class="action-buttons">
+          <div class="action-btn" data-btn="b">
+            <div class="btn-circle">B</div>
+            <span class="btn-label"><kbd>K</kbd></span>
+          </div>
+          <div class="action-btn" data-btn="a">
+            <div class="btn-circle">A</div>
+            <span class="btn-label"><kbd>L</kbd></span>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="kbd-hint"><kbd>WASD</kbd> move · <kbd>L</kbd> A · <kbd>K</kbd> B<br><kbd>↵</kbd> start · <kbd>⇧</kbd> select</div> -->
+    </div>
+  </div>
+
+  <script type="module" src="js/player.js"></script>
+</body>
+
+</html>

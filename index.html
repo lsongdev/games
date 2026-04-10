@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Lsong’s Pages</title>
+  <title>Lsong’s Games</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="description" content="homepage, blog, music and etc.">
@@ -18,8 +18,128 @@
   <link rel="icon" type="image/svg+xml" href="https://lsong.org/icon.svg">
   <link rel="apple-touch-icon" sizes="128x128" type="image/png" href="https://lsong.org/icon-x128.png">
   <link rel="apple-touch-icon" sizes="512x512" type="image/png" href="https://lsong.org/icon-x512.png">
-  <link rel="stylesheet" href="index.css">
-  <script type="module" src="index.js"></script>
+  <link rel="stylesheet" href="css/index.css">
+  <style>
+    .genre-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .genre-chip {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      color: #aaa;
+      background: #1a1a2e;
+      border: 1px solid #2a2a4a;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .genre-chip:hover {
+      color: #fff;
+      background: #2a2a4a;
+      border-color: #3a3a6a;
+    }
+    .genre-chip.active {
+      color: #fff;
+      background: #4a4a8a;
+      border-color: #6a6aaa;
+    }
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+      padding: 8px 0;
+    }
+    .no-games {
+      color: #888;
+      text-align: center;
+      padding: 40px 0;
+    }
+    .game-card {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #1a1a2e;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .game-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    }
+    .game-card img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+      background: #16213e;
+    }
+    .game-card .game-info {
+      padding: 8px 10px 10px;
+    }
+    .game-card .game-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #e0e0e0;
+    }
+    .game-card .game-title-cn {
+      font-size: 0.7rem;
+      color: #888;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .game-card .game-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+      font-size: 0.65rem;
+      color: #666;
+    }
+    .game-card .game-year {
+      color: #999;
+    }
+    .game-card .game-rating {
+      color: #f0c040;
+    }
+    .game-card.no-cover {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 160px;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+    }
+    .game-card.no-cover .game-icon {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+      opacity: 0.6;
+    }
+    @media (max-width: 480px) {
+      .games-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+      }
+      .game-card .game-title {
+        font-size: 0.75rem;
+      }
+    }
+  </style>
+  <script type="module" src="js/index.js"></script>
 </head>
 
 <body>
@@ -27,7 +147,7 @@
     <header class="header">
       <a href="/" class="heading">
         <img src="https://lsong.org/icon.svg" alt="logo" class="logo" width="24">
-        <h1 prefix="Lsong’s " class="title">Pages</h1>
+        <h1 prefix="Lsong’s " class="title">Games</h1>
       </a>
       <nav class="nav nav-bar">
         <a href="//lsong.org">home</a>
