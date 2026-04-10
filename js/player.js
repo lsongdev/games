@@ -1,7 +1,4 @@
-import { Emulator } from "../nes/core/index.js";
-import { StandardControllerButton } from "../nes/core/api/controller.js";
-import { Screen } from "../nes/dom/screen.js";
-import { Audio } from "../nes/dom/audio.js";
+import { Browser } from "../jsnes/index.js";
 
 const INDEX_URL = "files/index.json";
 const ROM_BASE = "files/roms/";
@@ -66,43 +63,72 @@ async function fetchGame(id) {
   return { rom: g.rom, data: new Uint8Array(await r2.arrayBuffer()) };
 }
 
-function run(rom, data) {
-  const audio = new Audio();
-  const screen = new Screen(document.getElementById("screen"));
+function run(rom, romData) {
   const sramKey = `sram:${rom}`;
 
-  let sram;
-  try {
-    const raw = localStorage.getItem(sramKey);
-    if (raw) sram = Uint8Array.from(JSON.parse(raw));
-  } catch { /* ignore */ }
+  // Setup SRAM save callback
+  const onBatteryRamWrite = (address, value) => {
+    try {
+      // Debounced SRAM save
+      clearTimeout(window._sramSaveTimeout);
+      window._sramSaveTimeout = setTimeout(() => {
+        if (jsnesBrowser && jsnesBrowser.nes.mmap && jsnesBrowser.nes.mmap.batteryRam) {
+          localStorage.setItem(sramKey, JSON.stringify(Array.from(jsnesBrowser.nes.mmap.batteryRam)));
+        }
+      }, 1000);
+    } catch { /* ignore */ }
+  };
 
-  const emu = new Emulator(data, {
-    sampleRate: audio.sampleRate,
-    onSample: v => audio.onSample(v),
-    onFrame: f => screen.onFrame(f),
-    sramLoad: sram,
+  // Create JSNes Browser emulator
+  const screenContainer = document.getElementById('screen-container');
+  const jsnesBrowser = new Browser({
+    container: screenContainer,
+    romData: romData.reduce((data, byte) => data + String.fromCharCode(byte), ''),
+    onBatteryRamWrite: onBatteryRamWrite,
+    onError: (e) => {
+      console.error(e);
+      showErr(e.message);
+    },
   });
 
-  audio.emulator = emu;
-  screen.emulator = emu;
-  audio.start();
+  // Ensure the canvas fills the container
+  const resizeCanvas = () => {
+    jsnesBrowser.fitInParent();
+    // Also set CSS max-dimensions to ensure proper scaling
+    const canvas = screenContainer.querySelector('canvas');
+    if (canvas) {
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.objectFit = 'contain';
+    }
+  };
+  resizeCanvas();
 
-  const tid = setInterval(() => {
-    try { localStorage.setItem(sramKey, JSON.stringify(Array.from(emu.sram))); } catch { /* */ }
-  }, 3000);
+  // Load SRAM if available
+  try {
+    const raw = localStorage.getItem(sramKey);
+    if (raw && jsnesBrowser.nes.mmap) {
+      const sram = JSON.parse(raw);
+      // Restore battery RAM
+      if (jsnesBrowser.nes.mmap.batteryRam && sram.length <= jsnesBrowser.nes.mmap.batteryRam.length) {
+        for (let i = 0; i < sram.length; i++) {
+          jsnesBrowser.nes.mmap.batteryRam[i] = sram[i];
+        }
+      }
+    }
+  } catch { /* ignore */ }
 
-  // Button mapping
+  // Button mapping - JSNes controller constants
   const map = {
-    KeyW: StandardControllerButton.UP,
-    KeyS: StandardControllerButton.DOWN,
-    KeyA: StandardControllerButton.LEFT,
-    KeyD: StandardControllerButton.RIGHT,
-    Enter: StandardControllerButton.START,
-    ShiftRight: StandardControllerButton.SELECT,
-    ShiftLeft: StandardControllerButton.SELECT,
-    KeyL: StandardControllerButton.A,
-    KeyK: StandardControllerButton.B,
+    KeyW: 4,  // BUTTON_UP
+    KeyS: 5,  // BUTTON_DOWN
+    KeyA: 6,  // BUTTON_LEFT
+    KeyD: 7,  // BUTTON_RIGHT
+    Enter: 3, // BUTTON_START
+    ShiftRight: 2, // BUTTON_SELECT
+    ShiftLeft: 2,  // BUTTON_SELECT
+    KeyL: 0,  // BUTTON_A
+    KeyK: 1,  // BUTTON_B
   };
 
   const pressed = new Set();
@@ -110,18 +136,18 @@ function run(rom, data) {
   function press(btn) {
     if (!pressed.has(btn)) {
       pressed.add(btn);
-      emu.standardController1.updateButton(btn, true);
-      emu.standardController2.updateButton(btn, true);
+      jsnesBrowser.nes.buttonDown(1, btn);
+      jsnesBrowser.nes.buttonDown(2, btn);
     }
   }
 
   function release(btn) {
     pressed.delete(btn);
-    emu.standardController1.updateButton(btn, false);
-    emu.standardController2.updateButton(btn, false);
+    jsnesBrowser.nes.buttonUp(1, btn);
+    jsnesBrowser.nes.buttonUp(2, btn);
   }
 
-  // Keyboard
+  // Keyboard - override Browser's keyboard handler
   const kbHandler = e => {
     const btn = map[e.code];
     if (btn !== undefined) {
@@ -135,14 +161,14 @@ function run(rom, data) {
 
   // Touch / pointer controls on controller buttons
   const btnMap = {
-    up: StandardControllerButton.UP,
-    down: StandardControllerButton.DOWN,
-    left: StandardControllerButton.LEFT,
-    right: StandardControllerButton.RIGHT,
-    a: StandardControllerButton.A,
-    b: StandardControllerButton.B,
-    start: StandardControllerButton.START,
-    select: StandardControllerButton.SELECT,
+    up: 4,
+    down: 5,
+    left: 6,
+    right: 7,
+    a: 0,
+    b: 1,
+    start: 3,
+    select: 2,
   };
 
   document.querySelectorAll('[data-btn]').forEach(el => {
@@ -160,13 +186,15 @@ function run(rom, data) {
 
   showLoading(false);
 
-  const loop = () => { emu.frame(); requestAnimationFrame(loop); };
-  requestAnimationFrame(loop);
+  // Handle window resize
+  const handleResize = () => resizeCanvas();
+  window.addEventListener('resize', handleResize);
 
   window.addEventListener("beforeunload", () => {
-    clearInterval(tid);
     document.removeEventListener("keydown", kbHandler);
     document.removeEventListener("keyup", kbHandler);
+    window.removeEventListener('resize', handleResize);
+    jsnesBrowser.destroy();
   });
 }
 
