@@ -2,7 +2,7 @@
   "games": [
     {
       "id": "akumajou-densetsu",
-      "title": "Castlevania III: Dracula\\",
+      "title": "Castlevania III: Dracula's Curse",
       "titleCn": "恶魔城传说",
       "year": 1989,
       "genre": "fighting",
@@ -184,7 +184,7 @@
     },
     {
       "id": "ghosts-n-goblins",
-      "title": "Ghosts\\",
+      "title": "Ghosts 'n Goblins",
       "titleCn": "魔界村",
       "year": 1986,
       "genre": "action",
@@ -226,7 +226,7 @@
     },
     {
       "id": "kirby-adventure",
-      "title": "Kirby\\",
+      "title": "Kirby's Adventure",
       "titleCn": "星之卡比",
       "year": 1993,
       "genre": "platform",
@@ -688,7 +688,7 @@
     },
     {
       "id": "bonk-adventure",
-      "title": "Bonk\\",
+      "title": "Bonk's Adventure",
       "titleCn": "大头娃娃冒险记",
       "year": 1993,
       "genre": "platform",
@@ -772,7 +772,7 @@
     },
     {
       "id": "crash-boys",
-      "title": "Crash\\",
+      "title": "Crash Boys",
       "titleCn": "热血格斗传说",
       "year": 1992,
       "genre": "fighting",
@@ -898,7 +898,7 @@
     },
     {
       "id": "gargoyles-quest-2",
-      "title": "Gargoyle\\",
+      "title": "Gargoyle's Quest II",
       "titleCn": "红魔鬼2",
       "year": 1992,
       "genre": "action",
@@ -940,7 +940,7 @@
     },
     {
       "id": "jackie-chan",
-      "title": "Jackie Chan\\",
+      "title": "Kung-Fu Master",
       "titleCn": "成龙踢馆",
       "year": 1990,
       "genre": "action",
@@ -1178,7 +1178,7 @@
     },
     {
       "id": "rush-n-attack",
-      "title": "Rush\\",
+      "title": "Rush'n Attack",
       "titleCn": "绿色兵团",
       "year": 1987,
       "genre": "action",
@@ -1654,7 +1654,7 @@
     },
     {
       "id": "hammerin-harry",
-      "title": "Hammerin\\",
+      "title": "Hammerin' Harry",
       "titleCn": "大工锤之男",
       "year": 1992,
       "genre": "action",
