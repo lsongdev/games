@@ -13,6 +13,13 @@ export interface IROMInfo {
     mirror: Mirror;
     hasBatteryBacked: boolean;
     isTrained: boolean;
+    // NES 2.0 extended fields
+    isNES20?: boolean;
+    prgSizeHigh?: number;
+    chrSizeHigh?: number;
+    extendedByteCount?: number;
+    submapper?: number;
+    defaultExpansion?: number;
 }
 export interface ICartridge {
     readonly info: IROMInfo;
