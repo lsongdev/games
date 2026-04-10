@@ -62,7 +62,7 @@ const GameCard = ({ game }) => {
   const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : '';
 
   return h('a', {
-    className: `game-card${hasCover ? '' : ' no-cover'}`,
+    className: `card game-card${hasCover ? '' : ' no-cover'}`,
     href: `player.html?game=${encodeURIComponent(id)}`,
     'data-game': id,
   },

@@ -56,7 +56,6 @@ html, body {
 
 .game-cover {
   width: 100%;
-  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.4);
@@ -118,7 +117,7 @@ html, body {
   background: #000;
   border-radius: 6px;
   overflow: hidden;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.6);
+  /* box-shadow: 0 2px 16px rgba(0,0,0,0.6); */
 }
 
 canvas#screen {
@@ -219,9 +218,11 @@ canvas#screen {
   color: #fff;
 }
 
-.action-btn .btn-label {
+.btn-label {
   font-size: 0.65rem;
   color: #666;
+  text-align: center;
+  margin-top: 5px;
 }
 
 .center-buttons {
@@ -319,6 +320,7 @@ kbd {
   .game-cover {
     width: 48px;
     height: 48px;
+    aspect-ratio: 1 / 1;
     border-radius: 6px;
     flex-shrink: 0;
   }

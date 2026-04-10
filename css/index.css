@@ -1,1 +1,137 @@
 @import url(https://lsong.org/css/stylesheet.css);
+
+.genre-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.genre-chip {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: #aaa;
+  background: #1a1a2e;
+  border: 1px solid #2a2a4a;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.genre-chip:hover {
+  color: #fff;
+  background: #2a2a4a;
+  border-color: #3a3a6a;
+}
+
+.genre-chip.active {
+  color: #fff;
+  background: #4a4a8a;
+  border-color: #6a6aaa;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  padding: 8px 0;
+}
+
+.no-games {
+  color: #888;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.game-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  /* background: var(--card-bg, #1a1a2e); */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  text-decoration: none;
+  display: block;
+}
+
+.game-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.game-card img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  background: #16213e;
+}
+
+.game-card .game-info {
+  padding: 8px 10px 10px;
+}
+
+.game-card .game-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* color: #e0e0e0; */
+}
+
+.game-card .game-title-cn {
+  font-size: 0.7rem;
+  color: #888;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.game-card .game-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+  font-size: 0.65rem;
+  color: #666;
+}
+
+.game-card .game-year {
+  color: #999;
+}
+
+.game-card .game-rating {
+  color: #f0c040;
+}
+
+.game-card.no-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+}
+
+.game-card.no-cover .game-icon {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+  opacity: 0.6;
+}
+
+@media (max-width: 480px) {
+  .games-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+  }
+
+  .game-card .game-title {
+    font-size: 0.75rem;
+  }
+}
