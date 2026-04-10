@@ -1,9 +1,9 @@
 
-class Screen {
+export class Screen {
   constructor(canvas, context = canvas.getContext("2d")) {
     this.canvas = canvas;
     this.context = context;
-    this.isTrimBorder = true;
+    this.isTrimBorder = false;
     this.hiddenImage = new Image();
     this.context.scale(3, 3);
     this.context.imageSmoothingEnabled = false;
@@ -39,6 +39,3 @@ class Screen {
     this.hiddenImage.src = this.hiddenCanvasElement.toDataURL();
   }
 }
-export {
-  Screen
-};

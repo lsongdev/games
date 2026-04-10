@@ -140,6 +140,7 @@ canvas#screen {
   gap: 16px;
   padding: 12px;
   background: #0f0f1a;
+  min-height: 200px;
 }
 
 .controller {
