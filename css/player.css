@@ -1,0 +1,372 @@
+@import url(https://lsong.org/css/stylesheet.css);
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0f0f1a;
+  color: #e0e0e0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  margin: 0;
+  padding: 0;
+}
+
+.page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+/* ── Info panel (left) ─────────────────────────────────── */
+.info-panel {
+  flex: 1 1 auto;
+  gap: 14px;
+  display: flex;
+  width: 200px;
+  min-width: 100px;
+  padding: 16px;
+  overflow: hidden;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #aaa;
+  text-decoration: none;
+  font-size: 0.85rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: #1a1a2e;
+  border: 1px solid #2a2a4a;
+  transition: all 0.15s ease;
+  width: fit-content;
+}
+
+.back-btn:hover {
+  color: #fff;
+  background: #2a2a4a;
+}
+
+.game-cover {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  background: #16213e;
+}
+
+.game-meta-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.game-meta-cn {
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 2px;
+}
+
+.game-desc {
+  font-size: 0.8rem;
+  color: #999;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.game-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  border-radius: 999px;
+  background: #1a1a2e;
+  border: 1px solid #2a2a4a;
+  color: #aaa;
+}
+
+.badge.year { color: #f0c040; border-color: #3a3a2a; }
+.badge.rating { color: #f0c040; border-color: #3a3a2a; }
+.badge.players { color: #6ac; border-color: #2a3a4a; }
+
+/* ── Screen area (center) ───────────────────────────── */
+.screen-area {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.screen-wrapper {
+  position: relative;
+  background: #000;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.6);
+}
+
+canvas#screen {
+  display: block;
+  image-rendering: pixelated;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+}
+
+/* ── Controller (right) ──────────────────────────────── */
+.controller-panel {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 12px;
+  background: #0f0f1a;
+  min-height: 200px;
+}
+
+.controller {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.dpad {
+  position: relative;
+  width: 100px;
+  height: 68px;
+}
+
+.dpad-btn {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background: #1a1a2e;
+  border: 1px solid #2a2a4a;
+  /* border-radius: 6px; */
+  color: #aaa;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dpad-btn:active, .dpad-btn.pressed {
+  background: #3a3a6a;
+  color: #fff;
+}
+
+.dpad-btn.up    { top: 0;   left: 50%; transform: translateX(-50%); }
+.dpad-btn.down  { bottom: 0; left: 50%; transform: translateX(-50%); }
+.dpad-btn.left  { left: 0;  bottom: 0;  transform: translateY(0%); }
+.dpad-btn.right { right: 0; bottom: 0;  transform: translateY(0%); }
+
+.action-buttons {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.action-btn .btn-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #2a1a2e;
+  border: 2px solid #4a2a4e;
+  color: #e08080;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s;
+}
+
+.action-btn .btn-circle:active,
+.action-btn .btn-circle.pressed {
+  background: #4a2a4e;
+  color: #fff;
+}
+
+.action-btn .btn-label {
+  font-size: 0.65rem;
+  color: #666;
+}
+
+.center-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.center-btn {
+  padding: 4px 14px;
+  font-size: 0.7rem;
+  color: #aaa;
+  background: #1a1a2e;
+  border: 1px solid #2a2a4a;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.center-btn:active, .center-btn.pressed {
+  background: #3a3a6a;
+  color: #fff;
+}
+
+.kbd-hint {
+  text-align: center;
+  font-size: 0.6rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+kbd {
+  display: inline-block;
+  padding: 1px 4px;
+  font-size: 0.6rem;
+  color: #999;
+  background: #1a1a2e;
+  border: 1px solid #2a2a4a;
+  border-radius: 3px;
+}
+
+/* ── Overlay ─────────────────────────────────────────── */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15,15,26,0.92);
+  z-index: 10;
+}
+
+.overlay.hidden { display: none; }
+
+.spinner {
+  width: 28px; height: 28px;
+  border: 3px solid #2a2a4a;
+  border-top-color: #6a6aaa;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.overlay-text {
+  margin-top: 10px;
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.error-msg {
+  color: #e55;
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 0 20px;
+  max-width: 400px;
+}
+
+/* ── Responsive: portrait (mobile) ───────────────────── */
+@media (max-width: 768px), (orientation: portrait) {
+  .page {
+    flex-direction: column;
+  }
+
+  .info-panel {
+    flex: 0 0 auto;
+    width: auto;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .game-cover {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  .game-meta-info {
+    min-width: 0;
+  }
+
+  .game-meta-title {
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .game-meta-cn {
+    font-size: 0.75rem;
+  }
+
+  .game-desc:empty {
+    display: none;
+  }
+
+  .screen-area {
+    flex: 1 1 auto;
+    padding: 4px 12px 0;
+  }
+
+  .controller-panel {
+    flex: 0 0 auto;
+    width: 100%;
+    flex-direction: row;
+    /* justify-content: space-between; */
+    padding: 8px 12px;
+  }
+
+  .controller {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 400px;
+    gap: 0;
+  }
+
+  .action-btn .btn-circle {
+    width: 40px;
+    height: 40px;
+  }
+
+  .kbd-hint { display: none; }
+}
