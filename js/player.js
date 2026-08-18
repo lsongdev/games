@@ -7,6 +7,30 @@ const INDEX_URL = "files/index.json";
 const ROM_BASE = "files/roms/";
 const COVER_BASE = "files/covers/";
 
+// Some mobile Safari versions and embedded WebViews still perform smart zoom
+// despite the viewport and touch-action declarations. Cancel only browser
+// gestures; pointer events continue to drive the virtual controller below.
+function preventPlayerZoomGestures() {
+  let lastTouchEnd = 0;
+
+  document.addEventListener('touchend', event => {
+    const now = Date.now();
+    if (now - lastTouchEnd < 350) event.preventDefault();
+    lastTouchEnd = now;
+  }, { passive: false });
+
+  document.addEventListener('touchmove', event => {
+    if (event.touches.length > 1) event.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('dblclick', event => event.preventDefault(), { passive: false });
+  document.addEventListener('gesturestart', event => event.preventDefault(), { passive: false });
+  document.addEventListener('gesturechange', event => event.preventDefault(), { passive: false });
+  document.addEventListener('gestureend', event => event.preventDefault(), { passive: false });
+}
+
+preventPlayerZoomGestures();
+
 const GENRE_LABELS = {
   action: '动作', adventure: '冒险', classic: '经典',
   fighting: '格斗', platform: '平台', puzzle: '益智',
