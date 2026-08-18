@@ -102,7 +102,10 @@ export class CPU {
         this.registers.A = 0;
         this.registers.X = 0;
         this.registers.Y = 0;
-        this.registers.P = 0;
+        // The 6502 enters reset with IRQs disabled and the unused status bit
+        // set. Some early games wait for several vblanks before executing
+        // SEI and otherwise fall into their IRQ trap during startup.
+        this.registers.P = Flags.I | Flags.U;
         this.registers.SP = 0xfd;
         this.registers.PC = this.bus.readWord(InterruptVector.RESET);
         this.deferCycles = 8;

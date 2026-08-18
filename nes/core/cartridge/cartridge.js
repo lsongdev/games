@@ -18,6 +18,8 @@ import { Mapper189 } from '../mapper/mapper189.js';
 import { Mapper245 } from '../mapper/mapper245.js';
 import { Mapper69 } from '../mapper/mapper69.js';
 import { Mapper9 } from '../mapper/mapper9.js';
+import { Mapper187 } from '../mapper/mapper187.js';
+import { Mapper65 } from '../mapper/mapper65.js';
 var Header;
 (function (Header) {
     Header[Header["PRG"] = 4] = "PRG";
@@ -90,6 +92,9 @@ export class Cartridge {
             case 24:
                 this.mapper = new Mapper24(this, sram, prg, chr);
                 break;
+            case 65:
+                this.mapper = new Mapper65(this, sram, prg, chr);
+                break;
             case 69:
                 this.mapper = new Mapper69(this, sram, prg, chr);
                 break;
@@ -107,6 +112,9 @@ export class Cartridge {
                 break;
             case 117:
                 this.mapper = new Mapper117(this, sram, prg, chr);
+                break;
+            case 187:
+                this.mapper = new Mapper187(this, sram, prg, chr);
                 break;
             case 189:
                 this.mapper = new Mapper189(this, sram, prg, chr);
@@ -219,7 +227,11 @@ export class Cartridge {
             this.info.chr = data[Header.CHR];
             
             const mapperL = data[Header.FLAG1] >> 4;
-            const mapperH = data[Header.FLAG2] >> 4;
+            // Old ROM tools sometimes filled bytes 7-15 with "DiskDude!".
+            // In that legacy header variant byte 7 is metadata garbage, so
+            // its high nibble must not be treated as mapper bits 4-7.
+            const hasArchaicHeaderJunk = data.slice(12, 16).some(value => value !== 0);
+            const mapperH = hasArchaicHeaderJunk ? 0 : data[Header.FLAG2] >> 4;
             this.info.mapper = mapperH << 4 | mapperL;
             
             this.info.mirror = data[Header.FLAG1] & 0x08 ? Mirror.FOUR_SCREEN :

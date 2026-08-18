@@ -29,7 +29,7 @@ export class Mapper4 {
         this.isIrqEnable = false;
         this.irqReloadCounter = 0;
         this.irqCounter = 0;
-        this.chr = new Uint8Array(256 * 1024);
+        this.chr = new Uint8Array(Math.max(256 * 1024, chr.length));
         this.chr.set(chr);
     }
     read(address) {
