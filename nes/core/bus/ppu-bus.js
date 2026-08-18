@@ -81,7 +81,7 @@ export class PPUBus {
             case Mirror.SINGLE_SCREEN_LOWER_BANK:
                 return address & 0x23FF;
             case Mirror.SINGLE_SCREEN_UPPER_BANK:
-                return address & 0x23FF + 0x0400;
+                return (address & 0x23FF) + 0x0400;
             default:
                 throw new Error(`Invalid mirror type: '${this.cartridge.info.mirror}'`);
         }

@@ -6,6 +6,7 @@ import { Mapper2 } from '../mapper/mapper2.js';
 import { Mapper3 } from '../mapper/mapper3.js';
 import { Mapper74 } from '../mapper/mapper74.js';
 import { Mapper242 } from '../mapper/mapper242.js';
+import { Mapper24 } from '../mapper/mapper24.js';
 var Header;
 (function (Header) {
     Header[Header["PRG"] = 4] = "PRG";
@@ -65,6 +66,9 @@ export class Cartridge {
                 break;
             case 4:
                 this.mapper = new Mapper4(this, sram, prg, chr);
+                break;
+            case 24:
+                this.mapper = new Mapper24(this, sram, prg, chr);
                 break;
             case 74:
                 this.mapper = new Mapper74(this, sram, prg, chr);

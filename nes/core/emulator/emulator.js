@@ -67,6 +67,9 @@ export class Emulator {
     clock() {
         this.cpu.clock();
         this.apu.clock();
+        if (this.cartridge.mapper.cpuClockHandle) {
+            this.cartridge.mapper.cpuClockHandle();
+        }
         this.ppu.clock();
         this.ppu.clock();
         this.ppu.clock();

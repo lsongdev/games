@@ -18,14 +18,14 @@
   <link rel="icon" type="image/svg+xml" href="https://lsong.org/icon.svg">
   <link rel="apple-touch-icon" sizes="128x128" type="image/png" href="https://lsong.org/icon-x128.png">
   <link rel="apple-touch-icon" sizes="512x512" type="image/png" href="https://lsong.org/icon-x512.png">
-  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/style.css">
   <script type="module" src="js/index.js"></script>
 </head>
 
 <body>
-  <header class="navbar">
+  <header class="navbar site-header">
     <a href="/" class="heading navbar-brand">
-      <img src="https://lsong.org/icon.svg" alt="logo" class="logo" width="24">
+      <img src="https://lsong.org/assets/web/icon.png?v=3" alt="logo" class="logo" width="24">
       <h1 prefix="Lsong’s " class="title">Games</h1>
     </a>
     <nav>
@@ -40,28 +40,31 @@
   </header>
   <main class="content">
 
-    <section id="hello">
-      <h2>Hello 👋</h2>
-      <p class="headline">
-        Hi, I'm Lsong, a full-stack developer with a passion for open-source software.
-        I have experience in web and mobile development, as well as a background in embedded systems and network
-        protocols.
-        I enjoy writing tech <a href="//lsong.org/posts">blogs</a> and developing <a
-          href="//lsong.org/start#apps">applications</a> in my spare time.
-        Proficient in Node.js, Golang, and server operations, I'm always eager to learn more and contribute to the
-        community.
-        Check out my GitHub <a href="https://github.com/lsongdev">@lsongdev</a> for some of my projects and feel free
-        to connect
-        with me to discuss ideas.
-        When I'm not coding, I enjoy listening to <a href="//lsong.org/music">music</a> and playing <a
-          href="//lsong.org/games">games</a>.
+    <section class="site-hero game-hero">
+      <p class="eyebrow">A tiny arcade on the web</p>
+      <h2 class="site-hero-title">Press start.<br><span>Play the classics.</span></h2>
+      <p class="site-hero-copy">
+        A hand-picked collection of NES favorites, ready to play in your browser.
+        Choose a game below and jump straight back into the 8-bit era.
       </p>
+      <div class="site-hero-actions">
+        <a class="button button-primary" href="#app">Browse games <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="hero-console" aria-hidden="true">
+        <div class="hero-screen">
+          <div class="tetris-art">
+            <i></i><i></i><i></i><i></i><i></i><i></i>
+            <i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+        </div>
+        <div class="hero-controls"><i></i><b>A</b><b>B</b></div>
+      </div>
     </section>
 
     <section id="app"></section>
 
     <hr />
-    <section id="subscribe" class="subscribe">
+    <section id="subscribe" class="subscribe card">
       <h2>Subscribe</h2>
       <p>Join our occasional newsletter for product launches, availability, job openings, and news:</p>
       <form action="https://formspree.io/hi@lsong.org" method="post" class="input-group width-full">
@@ -70,7 +73,7 @@
       </form>
     </section>
   </main>
-  <footer class="footer flex flex-center flex-jc-between">
+  <footer class="site-footer footer flex flex-center flex-jc-between">
     <div>
       Lsong
       <address>

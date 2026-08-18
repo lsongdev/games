@@ -1,8 +1,8 @@
 {
-  "name": "Lsong’s Web",
-  "short_name": "Lsong’s Web",
+  "name": "Lsong’s Games",
+  "short_name": "Lsong’s Games",
   "description": "homepage, blog, music and etc.",
-  "id": "?id=page",
+  "id": "?id=games",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000",

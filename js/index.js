@@ -62,12 +62,12 @@ const GameCard = ({ game }) => {
   const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : '';
 
   return h('a', {
-    className: `card game-card${hasCover ? '' : ' no-cover'}`,
+    className: `game-card${hasCover ? '' : ' no-cover'}`,
     href: `player.html?game=${encodeURIComponent(id)}`,
     'data-game': id,
   },
     hasCover
-      ? h('img', { src: coverUrl, alt: title || id, loading: 'lazy' })
+      ? h('img', { src: coverUrl, alt: title || id, loading: 'lazy', width: 100 })
       : h('div', { className: 'game-icon' }, '🎮'),
     h('div', { className: 'game-info' },
       title
