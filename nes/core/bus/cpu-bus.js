@@ -19,6 +19,8 @@ export class CPUBus {
             // Controller
             this.controller1.write(data);
             this.controller2.write(data);
+            // VS System mapper 99 also latches CHR banking through $4016.
+            this.cartridge.mapper.write(address, data);
         }
         else if (address < 0x4018) {
             // APU: $4000-$4013, $4015 and $4017

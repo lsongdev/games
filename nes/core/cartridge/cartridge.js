@@ -7,6 +7,15 @@ import { Mapper3 } from '../mapper/mapper3.js';
 import { Mapper74 } from '../mapper/mapper74.js';
 import { Mapper242 } from '../mapper/mapper242.js';
 import { Mapper24 } from '../mapper/mapper24.js';
+import { Mapper7 } from '../mapper/mapper7.js';
+import { Mapper17 } from '../mapper/mapper17.js';
+import { Mapper83 } from '../mapper/mapper83.js';
+import { Mapper90 } from '../mapper/mapper90.js';
+import { Mapper91 } from '../mapper/mapper91.js';
+import { Mapper99 } from '../mapper/mapper99.js';
+import { Mapper117 } from '../mapper/mapper117.js';
+import { Mapper189 } from '../mapper/mapper189.js';
+import { Mapper245 } from '../mapper/mapper245.js';
 var Header;
 (function (Header) {
     Header[Header["PRG"] = 4] = "PRG";
@@ -67,8 +76,35 @@ export class Cartridge {
             case 4:
                 this.mapper = new Mapper4(this, sram, prg, chr);
                 break;
+            case 7:
+                this.mapper = new Mapper7(this, sram, prg, chr);
+                break;
+            case 17:
+                this.mapper = new Mapper17(this, sram, prg, chr);
+                break;
             case 24:
                 this.mapper = new Mapper24(this, sram, prg, chr);
+                break;
+            case 83:
+                this.mapper = new Mapper83(this, sram, prg, chr);
+                break;
+            case 90:
+                this.mapper = new Mapper90(this, sram, prg, chr);
+                break;
+            case 91:
+                this.mapper = new Mapper91(this, sram, prg, chr);
+                break;
+            case 99:
+                this.mapper = new Mapper99(this, sram, prg, chr);
+                break;
+            case 117:
+                this.mapper = new Mapper117(this, sram, prg, chr);
+                break;
+            case 189:
+                this.mapper = new Mapper189(this, sram, prg, chr);
+                break;
+            case 245:
+                this.mapper = new Mapper245(this, sram, prg, chr);
                 break;
             case 74:
                 this.mapper = new Mapper74(this, sram, prg, chr);
