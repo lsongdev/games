@@ -6,6 +6,7 @@ export class Mapper3 {
         this.prg = prg;
         this.chr = chr;
         this.chrBankSelect = 0;
+        this.chrBankCount = Math.max(1, chr.length >> 13);
         this.chr = new Uint8Array(32 * 1024);
         this.chr.set(chr);
         this.prg = new Uint8Array(32 * 1024);
@@ -36,7 +37,11 @@ export class Mapper3 {
             this.chr[(this.chrBankSelect << 13) + address] = data;
         }
         else if (address >= 0x8000) {
-            this.chrBankSelect = data & 0x03;
+            // Discrete CNROM boards have bus conflicts: the value driven by
+            // the CPU is ANDed with the PRG-ROM byte visible at the write
+            // address. Tengen Tetris relies on this to select a valid bank.
+            const romValue = this.prg[address - 0x8000];
+            this.chrBankSelect = ((data & romValue) & 0x03) % this.chrBankCount;
         }
         else if (address >= 0x6000) {
             this.ram[address - 0x6000] = data;

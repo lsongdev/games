@@ -16,6 +16,8 @@ import { Mapper99 } from '../mapper/mapper99.js';
 import { Mapper117 } from '../mapper/mapper117.js';
 import { Mapper189 } from '../mapper/mapper189.js';
 import { Mapper245 } from '../mapper/mapper245.js';
+import { Mapper69 } from '../mapper/mapper69.js';
+import { Mapper9 } from '../mapper/mapper9.js';
 var Header;
 (function (Header) {
     Header[Header["PRG"] = 4] = "PRG";
@@ -79,11 +81,17 @@ export class Cartridge {
             case 7:
                 this.mapper = new Mapper7(this, sram, prg, chr);
                 break;
+            case 9:
+                this.mapper = new Mapper9(this, sram, prg, chr);
+                break;
             case 17:
                 this.mapper = new Mapper17(this, sram, prg, chr);
                 break;
             case 24:
                 this.mapper = new Mapper24(this, sram, prg, chr);
+                break;
+            case 69:
+                this.mapper = new Mapper69(this, sram, prg, chr);
                 break;
             case 83:
                 this.mapper = new Mapper83(this, sram, prg, chr);
