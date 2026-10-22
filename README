@@ -1,2 +1,24 @@
 🎮 Games
 https://lsong.org/games
+
+Controls
+--------
+Drag the joystick to move in eight directions; return to the center or lift
+your finger to stop. Hold A and B with other fingers while moving. In landscape
+on phones, the joystick sits to the left of the screen and A/B to the right.
+
+Keyboard: WASD or arrow keys to move, L for A, K for B, Enter for Start,
+and either Shift key for Select.
+
+Development
+-----------
+Serve this directory with any static HTTP server, for example:
+  python3 -m http.server 8000
+
+Browser regression tests (Node.js 20 or later):
+  npm ci
+  npx playwright install chromium webkit
+  npm test
+
+The tests start their own local server and cover joystick dragging, multi-touch,
+input cleanup, keyboard combinations, responsive layouts, and real-game boot.

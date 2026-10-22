@@ -322,6 +322,7 @@ html.player-page,
 body.player-page {
   width: 100%;
   height: 100%;
+  height: 100dvh;
   margin: 0;
   overflow: hidden;
   color: var(--text);
@@ -335,10 +336,17 @@ body.player-page {
   -webkit-touch-callout: none;
 }
 
+.player-page *,
+.player-page *::before,
+.player-page *::after {
+  box-sizing: border-box;
+}
+
 /* Keep rapid virtual-controller taps from becoming browser zoom gestures. */
 .player-page .page,
 .player-page .screen-wrapper,
 .player-page canvas,
+.player-page .controller,
 .player-page [data-btn] {
   touch-action: none;
   -ms-touch-action: none;
@@ -349,6 +357,7 @@ body.player-page {
   grid-template-columns: minmax(150px, 220px) minmax(320px, 1fr) minmax(180px, 240px);
   width: 100%;
   height: 100%;
+  min-height: 0;
   gap: clamp(12px, 2vw, 28px);
   padding: clamp(14px, 2vw, 28px);
 }
@@ -492,67 +501,77 @@ canvas#screen {
 
 .dpad {
   position: relative;
-  width: 112px;
-  height: 112px;
-}
-
-.dpad::after {
-  position: absolute;
-  top: 39px;
-  left: 39px;
-  width: 34px;
-  height: 34px;
-  border: 1px solid rgba(255, 255, 255, 0.035);
-  background: #222a40;
-  content: "";
+  width: 136px;
+  height: 136px;
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: radial-gradient(circle, #222a40 0%, #111729 72%);
+  box-shadow: inset 0 3px 14px rgba(0, 0, 0, 0.3);
+  touch-action: none;
+  cursor: grab;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .dpad-btn {
   position: absolute;
-  z-index: 1;
   display: grid;
-  width: 38px;
-  height: 38px;
+  width: 32%;
+  height: 32%;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.08);
   color: #9ba6bd;
-  background: linear-gradient(145deg, #293149, #171d30);
   font-size: 0.72rem;
-  cursor: pointer;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.28);
-  transition: color 90ms ease, background 90ms ease, transform 90ms ease;
-  -webkit-tap-highlight-color: transparent;
+  border-radius: 50%;
+  transition: color 90ms ease, background 90ms ease;
 }
 
 .dpad-btn.up {
-  top: 1px;
-  left: 37px;
-  border-radius: 7px 7px 2px 2px;
+  top: 0;
+  left: 34%;
 }
 
 .dpad-btn.down {
-  bottom: 1px;
-  left: 37px;
-  border-radius: 2px 2px 7px 7px;
+  bottom: 0;
+  left: 34%;
 }
 
 .dpad-btn.left {
-  top: 37px;
-  left: 1px;
-  border-radius: 7px 2px 2px 7px;
+  top: 34%;
+  left: 0;
 }
 
 .dpad-btn.right {
-  top: 37px;
-  right: 1px;
-  border-radius: 2px 7px 7px 2px;
+  top: 34%;
+  right: 0;
 }
 
-.dpad-btn:active,
 .dpad-btn.pressed {
   color: #fff;
   background: #4f5685;
-  box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.32);
+}
+
+.stick-thumb {
+  position: absolute;
+  top: 27%;
+  left: 27%;
+  width: 46%;
+  height: 46%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 25%, #526080, #293149 75%);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.12);
+  pointer-events: none;
+  transform: translate3d(var(--stick-x, 0px), var(--stick-y, 0px), 0);
+  transition: transform 100ms ease-out;
+}
+
+.dpad.engaged {
+  cursor: grabbing;
+  border-color: var(--accent);
+}
+
+.dpad.engaged .stick-thumb {
+  transition: none;
 }
 
 .action-buttons {
@@ -566,6 +585,14 @@ canvas#screen {
   flex-direction: column;
   align-items: center;
   gap: 3px;
+  min-width: 52px;
+  min-height: 52px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
@@ -585,8 +612,7 @@ canvas#screen {
   transition: transform 90ms ease, filter 90ms ease;
 }
 
-.action-btn .btn-circle:active,
-.action-btn .btn-circle.pressed {
+.action-btn.pressed .btn-circle {
   filter: brightness(1.2);
   transform: translateY(2px) scale(0.96);
 }
@@ -597,6 +623,7 @@ canvas#screen {
 }
 
 .center-btn {
+  min-height: 44px;
   min-width: 68px;
   padding: 7px 12px;
   border: 1px solid var(--line);
@@ -614,11 +641,15 @@ canvas#screen {
   -webkit-tap-highlight-color: transparent;
 }
 
-.center-btn:active,
 .center-btn.pressed {
   color: #fff;
   background: #464e75;
   transform: translateY(2px);
+}
+
+.controller button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
 }
 
 .btn-label {
@@ -741,22 +772,23 @@ kbd {
     box-shadow: 0 24px 70px rgba(51, 65, 85, 0.2), 0 0 0 6px rgba(255, 255, 255, 0.42);
   }
 
-  .dpad::after {
-    border-color: rgba(51, 65, 85, 0.06);
-    background: #d4d9e5;
+  .dpad {
+    background: radial-gradient(circle, #e5e9f2 0%, #cdd3df 72%);
+    box-shadow: inset 0 3px 14px rgba(51, 65, 85, 0.15);
   }
 
   .dpad-btn {
-    border-color: rgba(51, 65, 85, 0.12);
     color: #59657c;
-    background: linear-gradient(145deg, #f1f3f8, #cdd3df);
-    box-shadow: 0 5px 10px rgba(51, 65, 85, 0.18);
   }
 
-  .dpad-btn:active,
   .dpad-btn.pressed {
     color: #fff;
     background: #69729b;
+  }
+
+  .stick-thumb {
+    background: radial-gradient(circle at 35% 25%, #fff, #aeb8ce 75%);
+    box-shadow: 0 5px 12px rgba(51, 65, 85, 0.25);
   }
 
   .action-btn .btn-circle {
@@ -772,7 +804,6 @@ kbd {
     box-shadow: 0 5px 10px rgba(51, 65, 85, 0.14);
   }
 
-  .center-btn:active,
   .center-btn.pressed {
     color: #fff;
     background: #69729b;
@@ -825,7 +856,7 @@ kbd {
 @media (max-width: 768px), (orientation: portrait) {
   .page {
     display: grid;
-    grid-template: auto minmax(0, 1fr) auto / 1fr;
+    grid-template: auto minmax(0, 1fr) auto / minmax(0, 1fr);
     gap: 8px;
     padding: max(8px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
   }
@@ -888,6 +919,7 @@ kbd {
 
   .screen-wrapper {
     width: min(100%, calc((100vh - 265px) * 1.0666667));
+    width: min(100%, calc((100dvh - 320px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * 1.0666667));
     max-height: 100%;
     border-radius: 10px;
   }
@@ -895,40 +927,53 @@ kbd {
   .controller-panel {
     width: 100%;
     min-height: 0;
-    padding: 9px 12px;
+    padding: 12px 16px;
     border-radius: 16px;
   }
 
   .controller {
     display: grid;
     width: min(100%, 520px);
-    grid-template-columns: 112px minmax(110px, 1fr) 118px;
+    grid-template: 'dpad actions' auto 'center center' auto / 1fr 1fr;
     gap: 8px;
   }
 
   .dpad {
-    transform: scale(0.82);
+    grid-area: dpad;
+    width: clamp(124px, 34vw, 152px);
+    height: auto;
+    aspect-ratio: 1;
   }
 
   .center-buttons {
+    grid-area: center;
     justify-content: center;
-    gap: 6px;
+    gap: 16px;
   }
 
   .center-btn {
-    min-width: 52px;
-    padding: 6px 8px;
-    font-size: 0.56rem;
+    min-width: 68px;
+    padding: 8px 12px;
+    font-size: 0.62rem;
   }
 
   .action-buttons {
+    grid-area: actions;
     justify-content: flex-end;
-    gap: 10px;
+    gap: 8px;
+  }
+
+  .action-btn {
+    padding: 4px;
+  }
+
+  .action-btn[data-btn='a'] {
+    transform: translateY(-14px);
   }
 
   .action-btn .btn-circle {
-    width: 44px;
-    height: 44px;
+    width: clamp(48px, 13vw, 64px);
+    height: clamp(48px, 13vw, 64px);
   }
 
   .btn-label {
@@ -936,46 +981,77 @@ kbd {
   }
 }
 
-@media (max-height: 520px) and (orientation: landscape) {
+/* Keep the screen between the thumbs on phones, including wide phones whose
+   landscape viewport exceeds the desktop width breakpoint. */
+@media (max-height: 600px) and (orientation: landscape) {
   .page {
-    grid-template-columns: 120px minmax(280px, 1fr) 150px;
+    grid-template: minmax(0, 1fr) / 136px minmax(0, 1fr) 136px;
     gap: 8px;
-    padding: 8px;
+    padding: max(8px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
   }
 
   .info-panel {
-    padding: 8px;
-    gap: 8px;
-    border-radius: 14px;
-  }
-
-  .game-cover {
-    max-height: 45vh;
-  }
-
-  .game-desc,
-  .game-badges {
     display: none;
   }
 
+  .screen-area {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .screen-wrapper {
+    width: min(100%, calc((100vh - 32px) * 1.0666667));
+    width: min(100%, calc((100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * 1.0666667));
+    border-radius: 10px;
+  }
+
   .controller-panel {
-    min-height: 0;
-    padding: 8px;
-    border-radius: 14px;
+    display: contents;
   }
 
   .controller {
-    gap: 10px;
+    display: contents;
   }
 
   .dpad {
-    transform: scale(0.72);
-    margin-block: -15px;
+    grid-area: 1 / 1;
+    align-self: center;
+    justify-self: center;
+    width: 128px;
+    height: 128px;
+  }
+
+  .action-buttons {
+    grid-area: 1 / 3;
+    align-self: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .action-btn {
+    padding: 4px;
+  }
+
+  .action-btn[data-btn='a'] {
+    transform: translateY(-14px);
   }
 
   .action-btn .btn-circle {
-    width: 42px;
-    height: 42px;
+    width: 52px;
+    height: 52px;
+  }
+
+  .center-buttons {
+    grid-area: 1 / 3;
+    align-self: end;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .center-btn {
+    min-width: 62px;
+    padding: 8px 6px;
+    font-size: 0.6rem;
   }
 
   .btn-label {
@@ -985,35 +1061,23 @@ kbd {
 
 @media (max-width: 420px) and (orientation: portrait) {
   .controller-panel {
-    padding-inline: 5px;
-  }
-
-  .controller {
-    grid-template-columns: 90px minmax(86px, 1fr) 94px;
-    gap: 3px;
-  }
-
-  .dpad {
-    margin-inline: -11px;
-    transform: scale(0.72);
-  }
-
-  .center-buttons {
-    gap: 3px;
-  }
-
-  .center-btn {
-    min-width: 42px;
-    padding-inline: 5px;
+    padding-inline: 10px;
   }
 
   .action-buttons {
-    gap: 5px;
+    gap: 4px;
+  }
+}
+
+/* Size the display from the space left by the controls, so tablets and short
+   viewports preserve the NES aspect ratio without estimating panel heights. */
+@supports (width: 1cqh) {
+  .player-page .screen-area {
+    container-type: size;
   }
 
-  .action-btn .btn-circle {
-    width: 40px;
-    height: 40px;
+  .player-page .screen-wrapper {
+    width: min(100%, calc(100cqh * 1.0666667));
   }
 }
 
