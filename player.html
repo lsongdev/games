@@ -39,33 +39,34 @@
     <!-- Right: controller -->
     <div class="controller-panel">
       <div class="controller">
-        <div class="dpad">
-          <div class="dpad-btn up" data-btn="up">▲</div>
-          <div class="dpad-btn down" data-btn="down">▼</div>
-          <div class="dpad-btn left" data-btn="left">◀</div>
-          <div class="dpad-btn right" data-btn="right">▶</div>
+        <div class="dpad" role="group" aria-label="Directional joystick: drag to move, WASD or arrow keys">
+          <span class="dpad-btn up" data-btn="up" aria-hidden="true">▲</span>
+          <span class="dpad-btn down" data-btn="down" aria-hidden="true">▼</span>
+          <span class="dpad-btn left" data-btn="left" aria-hidden="true">◀</span>
+          <span class="dpad-btn right" data-btn="right" aria-hidden="true">▶</span>
+          <span class="stick-thumb" aria-hidden="true"></span>
         </div>
 
         <div class="center-buttons">
           <div>
-            <div class="center-btn" data-btn="select">Select</div>
+            <button type="button" class="center-btn" data-btn="select" aria-pressed="false">Select</button>
             <div class="btn-label"><kbd>shift</kbd></div>
           </div>
           <div>
-            <div class="center-btn" data-btn="start" >Start</div>
+            <button type="button" class="center-btn" data-btn="start" aria-pressed="false">Start</button>
             <div class="btn-label"><kbd>enter</kbd></div>
           </div>
         </div>
 
         <div class="action-buttons">
-          <div class="action-btn" data-btn="b">
-            <div class="btn-circle">B</div>
+          <button type="button" class="action-btn" data-btn="b" aria-label="B" aria-pressed="false">
+            <span class="btn-circle">B</span>
             <span class="btn-label"><kbd>K</kbd></span>
-          </div>
-          <div class="action-btn" data-btn="a">
-            <div class="btn-circle">A</div>
+          </button>
+          <button type="button" class="action-btn" data-btn="a" aria-label="A" aria-pressed="false">
+            <span class="btn-circle">A</span>
             <span class="btn-label"><kbd>L</kbd></span>
-          </div>
+          </button>
         </div>
       </div>
       <!-- <div class="kbd-hint"><kbd>WASD</kbd> move · <kbd>L</kbd> A · <kbd>K</kbd> B<br><kbd>↵</kbd> start · <kbd>⇧</kbd> select</div> -->

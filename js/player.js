@@ -2,6 +2,7 @@ import { Emulator } from "../nes/core/index.js";
 import { StandardControllerButton } from "../nes/core/api/controller.js";
 import { Screen } from "../nes/dom/screen.js";
 import { Audio } from "../nes/dom/audio.js";
+import { bindController } from "./controller.js";
 
 const INDEX_URL = "files/index.json";
 const ROM_BASE = "files/roms/";
@@ -116,48 +117,6 @@ function run(rom, data) {
     try { localStorage.setItem(sramKey, JSON.stringify(Array.from(emu.sram))); } catch { /* */ }
   }, 3000);
 
-  // Button mapping
-  const map = {
-    KeyW: StandardControllerButton.UP,
-    KeyS: StandardControllerButton.DOWN,
-    KeyA: StandardControllerButton.LEFT,
-    KeyD: StandardControllerButton.RIGHT,
-    Enter: StandardControllerButton.START,
-    ShiftRight: StandardControllerButton.SELECT,
-    ShiftLeft: StandardControllerButton.SELECT,
-    KeyL: StandardControllerButton.A,
-    KeyK: StandardControllerButton.B,
-  };
-
-  const pressed = new Set();
-
-  function press(btn) {
-    if (!pressed.has(btn)) {
-      pressed.add(btn);
-      emu.standardController1.updateButton(btn, true);
-      emu.standardController2.updateButton(btn, true);
-    }
-  }
-
-  function release(btn) {
-    pressed.delete(btn);
-    emu.standardController1.updateButton(btn, false);
-    emu.standardController2.updateButton(btn, false);
-  }
-
-  // Keyboard
-  const kbHandler = e => {
-    const btn = map[e.code];
-    if (btn !== undefined) {
-      if (e.type === "keydown") press(btn);
-      else release(btn);
-      e.preventDefault();
-    }
-  };
-  document.addEventListener("keydown", kbHandler);
-  document.addEventListener("keyup", kbHandler);
-
-  // Touch / pointer controls on controller buttons
   const btnMap = {
     up: StandardControllerButton.UP,
     down: StandardControllerButton.DOWN,
@@ -169,17 +128,9 @@ function run(rom, data) {
     select: StandardControllerButton.SELECT,
   };
 
-  document.querySelectorAll('[data-btn]').forEach(el => {
-    const btn = btnMap[el.dataset.btn];
-    if (btn === undefined) return;
-
-    const onDown = e => { e.preventDefault(); press(btn); el.classList.add('pressed'); };
-    const onUp = e => { e.preventDefault(); release(btn); el.classList.remove('pressed'); };
-
-    el.addEventListener('pointerdown', onDown);
-    el.addEventListener('pointerup', onUp);
-    el.addEventListener('pointerleave', onUp);
-    el.addEventListener('pointercancel', onUp);
+  const unbindController = bindController(document.querySelector('.controller'), (button, down) => {
+    emu.standardController1.updateButton(btnMap[button], down);
+    emu.standardController2.updateButton(btnMap[button], down);
   });
 
   showLoading(false);
@@ -189,8 +140,7 @@ function run(rom, data) {
 
   window.addEventListener("beforeunload", () => {
     clearInterval(tid);
-    document.removeEventListener("keydown", kbHandler);
-    document.removeEventListener("keyup", kbHandler);
+    unbindController();
   });
 }
 
